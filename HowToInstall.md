@@ -13,12 +13,17 @@
 ## 下载
 - [synoboot.vmdk](<./Files/synoboot_3615.zip>)
 - [juns loader for DSM 6.2](<./Files/DS3615xs 6.0.2 Jun's Mod V1.01.zip>)
-- [黑群晖系统](<https://global.download.synology.com/download/DSM/release/6.2.3/25426/DSM_DS3615xs_25426.pat>)
+- [黑群晖系统](<https://archive.synology.com/download/Os/DSM/6.2.3-25426>)，选 *DS3617xs*
 - [OSFMount](<https://www.osforensics.com/tools/mount-disk-images.html>)
 
 ## 安装黑群晖
-### 修改 synoboot.vmdk
-1. 在 ESXi 新建虚拟机
+### 修改 synoboot.img
+1. 用 OSFMount 加载 synoboot.img
+2. 修改 grub/grub.cfg，包括以下内容：
+  - mac1
+  - sata_args 参数修改 `DiskIdxMap=310000 SataPortMap=144`
+3. 注释无关启动项
+
 
 ## 参考文献
 1. [Tutorial: Install DSM 6.2 on ESXi 6.7](<https://xpenology.com/forum/topic/13061-tutorial-install-dsm-62-on-esxi-67/>)
