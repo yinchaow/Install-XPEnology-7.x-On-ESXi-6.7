@@ -37,3 +37,4 @@
 ## 参考文献
 1. [Tutorial: Install DSM 6.2 on ESXi 6.7](<https://xpenology.com/forum/topic/13061-tutorial-install-dsm-62-on-esxi-67/>)
 2. [Tutorial/Reference: 6.x Loaders and Platforms](<https://xpenology.com/forum/topic/13333-tutorialreference-6x-loaders-and-platforms/>)
+3. [Running 6.2.3 on ESXi? Synoboot is BROKEN, fix available](<https://xpenology.com/forum/topic/28183-running-623-on-esxi-synoboot-is-broken-fix-available/>)
