@@ -25,6 +25,39 @@
   - mac1
   - sata_args 参数修改 `DiskIdxMap=310000 SataPortMap=144`
 3. 注释无关启动项
+```
+#menuentry "DS3615xs 6.2 Baremetal $VERSION" --class os {
+#        set img=
+#        savedefault
+#        loadlinux 3615 usb
+#        loadinitrd
+#        showtips
+#}
+#
+#menuentry "DS3615xs 6.2 Baremetal $VERSION Reinstall" --class os {
+#        set img=
+#        loadlinux 3615 usb mfg
+#        loadinitrd
+#        showtips
+#}
+#
+#menuentry "DS3615xs 6.2 Baremetal AMD $VERSION" --class os {
+#        set img=
+#        set zImage=bzImage
+#        savedefault
+#        loadlinux 3615 usb
+#        loadinitrd
+#        showtips
+#}
+
+menuentry "DS3615xs 6.2 VMWare/ESXI $VERSION" --class os {
+        set img=
+        savedefault
+        loadlinux 3615 sata
+        loadinitrd
+        showtips
+}
+```
 
 ### DSM 升级至 v6.2.3-25426 Update 3
 1. 下载 FixSynoboot.sh，上传至黑群晖
