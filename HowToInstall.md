@@ -16,7 +16,7 @@
 - [黑群晖系统 v6.2.3-25426](<https://global.download.synology.com/download/DSM/release/6.2.3/25426/DSM_DS3617xs_25426.pat>)
 - [黑群晖系统 v6.2.3-25426 Update 3](<https://global.download.synology.com/download/DSM/criticalupdate/update_pack/25426-3/synology_broadwell_3617xs.pat>)
 - [OSFMount](<https://www.osforensics.com/tools/mount-disk-images.html>)
-- [FixSynoboot.sh](<https://xpenology.com/forum/topic/28183-running-623-on-esxi-synoboot-is-broken-fix-available/>)
+- [FixSynoboot.sh](<https://xpenology.com/forum/topic/28183-running-623-on-esxi-synoboot-is-broken-fix-available/>)，需登录论坛
 
 ## 安装黑群晖
 ### 修改 synoboot.img
