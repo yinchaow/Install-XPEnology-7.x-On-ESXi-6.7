@@ -59,6 +59,10 @@ menuentry "DS3617xs 6.2 VMWare/ESXI $VERSION" --class os {
 }
 ```
 
+### 新建虚拟机
+1. 客户端操作系统选 *Linux*，版本选*其他 3.x Linux (64位)*
+2. 
+
 ### DSM 升级至 v6.2.3-25426 Update 3
 1. 下载 FixSynoboot.sh，上传至黑群晖
 2. `sudo cp FixSynoboot.sh /usr/local/etc/rc.d`
