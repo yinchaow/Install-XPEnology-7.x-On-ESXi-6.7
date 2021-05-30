@@ -13,8 +13,10 @@
 ## 下载
 - [synoboot.vmdk](<./Files/synoboot_3615.zip>)
 - [juns loader for DSM 6.2](<./Files/DS3615xs 6.0.2 Jun's Mod V1.01.zip>)
-- [黑群晖系统](<https://archive.synology.com/download/Os/DSM/6.2.3-25426>)，选 *DS3617xs*
+- [黑群晖系统 v6.2.3-25426](<https://global.download.synology.com/download/DSM/release/6.2.3/25426/DSM_DS3617xs_25426.pat>)
+- [黑群晖系统 v6.2.3-25426 Update 3](<https://global.download.synology.com/download/DSM/criticalupdate/update_pack/25426-3/synology_broadwell_3617xs.pat>)
 - [OSFMount](<https://www.osforensics.com/tools/mount-disk-images.html>)
+- [FixSynoboot.sh](<https://xpenology.com/forum/topic/28183-running-623-on-esxi-synoboot-is-broken-fix-available/>)
 
 ## 安装黑群晖
 ### 修改 synoboot.img
@@ -24,6 +26,13 @@
   - sata_args 参数修改 `DiskIdxMap=310000 SataPortMap=144`
 3. 注释无关启动项
 
+### DSM 升级至 v6.2.3-25426 Update 3
+1. 下载 FixSynoboot.sh，上传至黑群晖
+2. `sudo cp FixSynoboot.sh /usr/local/etc/rc.d`
+3. `sudo chmod 755 /usr/local/etc/rc.d/FixSynoboot.sh`
+4. 重启黑群晖
+5. 控制面板 - 更新和还原 - 手动更新 DSM - 选择已下载的 synology_broadwell_3617xs.pat
+6. 升级成功
 
 ## 参考文献
 1. [Tutorial: Install DSM 6.2 on ESXi 6.7](<https://xpenology.com/forum/topic/13061-tutorial-install-dsm-62-on-esxi-67/>)
