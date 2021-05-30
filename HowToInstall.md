@@ -24,7 +24,7 @@
 2. 修改 grub/grub.cfg，包括以下内容：
   - mac1
   - sata_args 参数修改 `DiskIdxMap=310000 SataPortMap=144`
-3. 注释无关启动项
+3. 用 # 注释无关启动项
 ```
 #menuentry "DS3617xs 6.2 Baremetal $VERSION" --class os {
 #        set img=
