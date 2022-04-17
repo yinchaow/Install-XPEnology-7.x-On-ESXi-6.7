@@ -80,7 +80,7 @@ sudo docker run -d --restart=always --net=host -v /root/.ssh/:/root/.ssh/ --name
 
 ## 参考文献
 1. [tinycore-redpill](<https://github.com/pocopico/tinycore-redpill>)
-2. [**Xpenology 7.0.1 on ESXi 7.x](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)（特别重要）**
+2. [**Xpenology 7.0.1 on ESXi 7.x**](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)**（特别重要）**
 3. [How to passthrough SATA drives directly on VMWare EXSI 6.5 as RDMs](<https://gist.github.com/Hengjie/1520114890bebe8f805d337af4b3a064>)
 4. [docker-xpenology-open-vm-tools](<https://github.com/yale-wp/docker-xpenology-open-vm-tools>)
 5. [Experiment on sata_args in grub.cfg](<https://gugucomputing.wordpress.com/2018/11/11/experiment-on-sata_args-in-grub-cfg>)
