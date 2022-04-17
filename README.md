@@ -1,4 +1,4 @@
-# 在 ESXi 6.7 上安装黑群晖 DSM 7.0.1
+# 在 ESXi 6.7 上安装黑群晖 DSM 7
 
 本文以在 ESXi 6.7 上安装 DS3622xs+ 为例。方法参照 [tmyers07](<https://github.com/tmyers07>) 的[教程](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)，稍作改动。
 
