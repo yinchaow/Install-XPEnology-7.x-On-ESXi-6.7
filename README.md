@@ -1,6 +1,7 @@
 # 在 ESXi 6.7 上安装黑群晖 DSM 7
 
-本文以在 ESXi 6.7 上安装 DS3622xs+ 为例。方法参照 [tmyers07](<https://github.com/tmyers07>) 的[教程](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)，稍作改动。
+本文以在 ESXi 6.7 上安装 DS3622xs+ 为例。共有 7 块物理硬盘，其中 3 块连接在主板 SATA 接口，4 块连接在 PCI-E 转 SATA 扩展卡。
+方法参照 [tmyers07](<https://github.com/tmyers07>) 的[教程](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)，稍作改动。
 
 |DS3622xs+ 主要硬件|规格|
 | ----------- | ----------- |
@@ -12,7 +13,7 @@
 - [DSM v7.0.1-42218](<https://global.download.synology.com/download/DSM/release/7.0.1/42218/DSM_DS3622xs%2B_42218.pat>)（来自 [群晖官网](<https://archive.synology.com/download/Os/DSM>)）
 
 ## 新建虚拟机
-1. 在 ESXi 新建虚拟机，假定虚拟机名为『XPEnology』。
+1. 在 ESXi 新建虚拟机，此处假定虚拟机名为『XPEnology』。
 2. 虚拟机操作系统类型选『Linux』，版本选『其他 4.x 或更高版本 Linux (64位)』。
 3. 内存勾选『预选所有客户机内存』。
 4. 删除原有硬盘、SCSI 控制器、USB 控制器、光驱。
@@ -21,8 +22,8 @@
 7. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传 tinycore-redpill.v0.4.6-flat.vmdk 和 tinycore-redpill.v0.4.6.vmdk。
 
 ## 修改虚拟机配置
-1. 添加现有硬盘，选 tinycore-redpill.v0.4.6.vmdk，控制选为『SATA 控制器 0:0』。
-2. 新建标准硬盘，50GB，控制选为『SATA 控制器 1:0』。
+1. 添加一块现有硬盘，选 tinycore-redpill.v0.4.6.vmdk，控制器选为『SATA 控制器 0:0』。
+2. 添加一块标准硬盘，大小可设为 50GB，厚置备延迟置零，控制器选为『SATA 控制器 1:0』。
 
 ## 设置 Tinycore Redpill
 1. 虚拟机开机，待进入图形界面，在其桌面鼠标右击，在弹出菜单中用键盘方向键依次选 Applications 和 Terminal，打开终端。
