@@ -12,6 +12,7 @@
 ## 下载
 - [tinycore-redpill 虚拟硬盘文件](<https://drive.google.com/drive/folders/1nRoggLEVLRbKagIaP3aE28m73agiEGpQ>)（tmyers07 提供，目前版本是 0.4.6）
 - [DSM v7.0.1-42218](<https://global.download.synology.com/download/DSM/release/7.0.1/42218/DSM_DS3622xs%2B_42218.pat>)（来自 [群晖官网](<https://archive.synology.com/download/Os/DSM>)）
+- [Offline bundle for ESXi 6.x - esxui-offline-bundle-6.x-10692217.zip](<https://flings.vmware.com/esxi-embedded-host-client>)（可能会用到）
 
 ## 新建虚拟机
 1. 在 ESXi 新建虚拟机，此处假定虚拟机名为『XPEnology』。
@@ -66,6 +67,11 @@ vmkfstools -z /vmfs/devices/disks/[t...] /vmfs/volumes/datastore1/XPEnology/[...
 
 2. 虚拟机添加三块现有硬盘，依次使用上面设置过 RDM 的三个 vmdk 文件，控制器选『SATA 控制器 1:x』，x 从 1 至 3。
 3. 虚拟机添加两个 PCI-E 设备：PCI-E 转 SATA 扩展卡、PCI-E 网卡。
+4. 如果添加 RDM 硬盘和 PCI-E 设备后，ESXi 报错『Possibly unhandled rejection: {}』，则将已下载的 esxui-offline-bundle-6.x-10692217.zip 上传到 ESXi，以保存在 datastore1 目录为例，执行以下命令安装，安装后重启 ESXi：
+
+```sh
+esxcli software vib install -d /vmfs/volumes/datastore1/esxui-offline-bundle-6.x-10692217.zip
+```
 
 ## 虚拟机第三次开机
 1. 开机后，在黑群晖中添加上一步加入的物理硬盘，此处不赘述。
@@ -84,3 +90,4 @@ sudo docker run -d --restart=always --net=host -v /root/.ssh/:/root/.ssh/ --name
 3. [How to passthrough SATA drives directly on VMWare EXSI 6.5 as RDMs](<https://gist.github.com/Hengjie/1520114890bebe8f805d337af4b3a064>)
 4. [docker-xpenology-open-vm-tools](<https://github.com/yale-wp/docker-xpenology-open-vm-tools>)
 5. [Experiment on sata_args in grub.cfg](<https://gugucomputing.wordpress.com/2018/11/11/experiment-on-sata_args-in-grub-cfg>)
+6. [ESXi 6.7 client GUI broken - cnMaestro OVA upload fails at times](<https://community.cambiumnetworks.com/t/esxi-6-7-client-gui-broken-cnmaestro-ova-upload-fails-at-times/61731>)
