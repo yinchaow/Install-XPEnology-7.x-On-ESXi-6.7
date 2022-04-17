@@ -5,7 +5,7 @@
 |DS3622xs+ 主要硬件|规格|
 | ----------- | ----------- |
 |CPU|Intel Xeon D-1531 (Broadwell)|
-|盘位|12（扩展可至 36）|
+|盘位|12，扩展可至 36|
 
 ## 下载
 - [tinycore-redpill 虚拟硬盘文件](<https://drive.google.com/drive/folders/1nRoggLEVLRbKagIaP3aE28m73agiEGpQ>)
@@ -14,12 +14,11 @@
 ## 新建虚拟机
 1. 在 ESXi 新建虚拟机，假定虚拟机名为『XPEnology』。
 2. 虚拟机操作系统类型选『Linux』，版本选『其他 4.x 或更高版本 Linux (64位)』。
-3. CPU 选 4 核心。
-4. 内存选 6GB，勾选『预选所有客户机内存』。
-5. 删除原有硬盘、SCSI 控制器、USB 控制器、光驱。
-6. 添加一个 SATA 控制器，此时应共有两个，编号分别是『SATA 控制器 0』和『SATA 控制器 1』。
-7. 虚拟机选项 - 引导选项 - 固件，改为『BIOS』。
-8. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传 tinycore-redpill.v0.4.6-flat.vmdk 和 tinycore-redpill.v0.4.6.vmdk。
+3. 内存勾选『预选所有客户机内存』。
+4. 删除原有硬盘、SCSI 控制器、USB 控制器、光驱。
+5. 添加一个 SATA 控制器，此时应共有两个，编号分别是『SATA 控制器 0』和『SATA 控制器 1』。
+6. 虚拟机选项 - 引导选项 - 固件，改为『BIOS』。
+7. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传 tinycore-redpill.v0.4.6-flat.vmdk 和 tinycore-redpill.v0.4.6.vmdk。
 
 ## 修改虚拟机配置
 1. 添加现有硬盘，选 tinycore-redpill.v0.4.6.vmdk，控制选为『SATA 控制器 0:0』。
@@ -53,7 +52,7 @@ poweroff                                            #虚拟机关机
 ## 虚拟机再次开机
 1. 约 1 分钟后，本地计算机浏览器访问 <http://find.synology.com>，寻找本地网络中的黑群晖。
 2. 找到黑虚拟后，按提示安装 DSM 7.0.1-42218。
-3. 按页面提示等待几分钟后，登录 DSM，此处不赘述。
+3. 按页面提示等待几分钟后，登录 DSM，按提示进行初始化设置，此处不赘述。
 4. 虚拟机关机。
 
 ## 第三次修改虚拟机配置
@@ -66,7 +65,8 @@ poweroff                                            #虚拟机关机
 
 ## 虚拟机第三次开机
 1. 开机后，在黑群晖中添加上一步加入的物理硬盘，此处不赘述。
-2. 在控制面板中开启 SSH，用 SSH 登录黑群晖，执行以下命令安装 Open VM Tools：
+2. 安装 Docker 套件。
+3. 在控制面板中开启 SSH，用 SSH 登录黑群晖，执行以下命令安装 Open VM Tools：
 
 ```
 sudo mkdir /root/.ssh
