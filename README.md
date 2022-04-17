@@ -1,77 +1,80 @@
 # 在 ESXi 6.7 上安装黑群晖 DSM 7.0.1
-## 确定黑群晖版本
-黑群晖常见版本有三个，根据 [flyride](<https://xpenology.com/forum/profile/39776-flyride/>) 整理的引导程序与硬件平台对照表格（截至 2020 年 12 月 29 日）选择最合适的方案。
 
-| 选项排名 | DSM 平台 | DSM 版本 | [引导程序](<https://xpenology.com/forum/topic/12952-dsm-62-loader/>) | 启动方式 | 硬件转码支持 | NVMe 缓存支持 | RAIDF1 支持 | **支持的 CPU** | 备注 |
-| ------ | -------- | ------- | ------- | ------- | ---------- | ----------- | ----------- | ------------- | --- |
-| 1，3a | DS918+ | 6.2.0 至 6.2.3 | 1.04b | UEFI，BIOS/CSM | 是 | 是 | 否 | [Haswell](<https://www.intel.cn/content/www/cn/zh/ark/products/codename/42174/haswell.html>)及后续 | 推荐 6.2.0 和 6.2.3，不推荐将 6.2.1/6.2.2 用于全新安装 |
-| 2，3b | DS3617xs | 6.2.0 至 6.2.3 | 1.03b | 仅 BIOS/CSM | 否 | 否 | 是 | 任何 x86-64 | 推荐 6.2.0 和 6.2.3，不推荐将 6.2.1/6.2.2 用于全新安装 |
-| | DS3615xs | 6.2.0 至 6.2.3 | 1.03b | BIOS/CSM | 否 | 否 | 是 | 任何 x86-64 | 推荐 6.2.0 和 6.2.3，不推荐将 6.2.1/6.2.2 用于全新安装 |
+本文以在 ESXi 6.7 上安装 DS3622xs+ 为例。方法参照 [tmyers07](<https://github.com/tmyers07>) 的[教程](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)，稍作改动。
 
-本文以 DS3617xs 为例。
+|DS3622xs+ 主要硬件|规格|
+| ----------- | ----------- |
+|CPU|Intel Xeon D-1531 (Broadwell)|
+|盘位|12（扩展可至 36）|
 
 ## 下载
-- [synoboot.vmdk](<./Files/synoboot_3615.zip>)
-- [juns loader for DSM 6.2](<./Files/DS3615xs 6.0.2 Jun's Mod V1.01.zip>)
-- [黑群晖系统 v6.2.3-25426](<https://global.download.synology.com/download/DSM/release/6.2.3/25426/DSM_DS3617xs_25426.pat>)
-- [黑群晖系统 v6.2.3-25426 Update 3](<https://global.download.synology.com/download/DSM/criticalupdate/update_pack/25426-3/synology_broadwell_3617xs.pat>)
-- [OSFMount](<https://www.osforensics.com/tools/mount-disk-images.html>)
-- [FixSynoboot.sh](<https://xpenology.com/forum/topic/28183-running-623-on-esxi-synoboot-is-broken-fix-available/>)，需登录论坛
+- [tinycore-redpill 虚拟硬盘文件](<https://drive.google.com/drive/folders/1nRoggLEVLRbKagIaP3aE28m73agiEGpQ>)
+- [DSM v7.0.1-42218](<https://global.download.synology.com/download/DSM/release/7.0.1/42218/DSM_DS3622xs%2B_42218.pat>)（来自 [DSM 官网](<https://archive.synology.com/download/Os/DSM>)）
 
-## 安装黑群晖
-### 修改 synoboot.img
-1. 用 OSFMount 加载 synoboot.img，不勾选*Read-only*
-2. 修改 grub/grub.cfg，包括以下内容：
-  - mac1
-  - sata_args 参数修改 `DiskIdxMap=310000 SataPortMap=144`
-3. 用 `#` 注释无关启动项
-```
-#menuentry "DS3617xs 6.2 Baremetal $VERSION" --class os {
-#        set img=
-#        savedefault
-#        loadlinux 3615 usb
-#        loadinitrd
-#        showtips
-#}
-#
-#menuentry "DS3617xs 6.2 Baremetal $VERSION Reinstall" --class os {
-#        set img=
-#        loadlinux 3615 usb mfg
-#        loadinitrd
-#        showtips
-#}
-#
-#menuentry "DS3617xs 6.2 Baremetal AMD $VERSION" --class os {
-#        set img=
-#        set zImage=bzImage
-#        savedefault
-#        loadlinux 3615 usb
-#        loadinitrd
-#        showtips
-#}
+## 新建虚拟机
+1. 在 ESXi 新建虚拟机，假定虚拟机名为『XPEnology』。
+2. 客户端操作系统选『Linux』，版本选『其他 4.x 或更高版本 Linux (64位)』。
+3. CPU 选 4 核心。
+4. 内存选 6GB，勾选『预选所有客户机内存』。
+5. 删除原有硬盘、SCSI 控制器、USB 控制器、光驱。
+6. 添加一个SATA 控制器，此时应有两个，编号分别是 0 和 1。
+7. 虚拟机选项 - 引导选项 - 固件，改为『BIOS』。
+8. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传 tinycore-redpill.v0.4.6-flat.vmdk 和 tinycore-redpill.v0.4.6.vmdk。
 
-menuentry "DS3617xs 6.2 VMWare/ESXI $VERSION" --class os {
-        set img=
-        savedefault
-        loadlinux 3615 sata
-        loadinitrd
-        showtips
-}
+## 修改虚拟机配置
+1. 添加现有硬盘，选 tinycore-redpill.v0.4.6.vmdk，控制选为『SATA 控制器 0:0』。
+2. 新建标准硬盘，50GB，控制选为『SATA 控制器 1:0』。
+
+## 设置 Tinycore Redpill
+1. 虚拟机开机，待进入图形界面，在其桌面鼠标右击，在弹出菜单中用键盘方向键依次选 Applications 和 Terminal，打开终端。
+2. 在终端用 `ifconfig` 命令查看 IP 地址。
+3. 在本地计算机使用 SSH 访问 Tinycore Redpill，用户名为 `tc`，密码为 `P@ssw0rd`。
+4. 依次执行以下命令：
+
+```sh
+sudo su
+./rploader.sh update now                            #更新 rploader.sh 至最新
+./rploader.sh serialgen DS3622xs+                   #生成 DS3622xs+ 的序列号和 MAC 地址，并写入 user_config.json
 ```
 
-### 新建虚拟机
-1. 客户端操作系统选 *Linux*，版本选*其他 3.x Linux (64位)*
-2. 
+5. 记下上一步生成的 MAC 地址。
+6. 用 vi 修改 user_config.json：DiskIdxMap=310000，SataPortMap=144。
+7. 依次执行以下命令：
 
-### DSM 升级至 v6.2.3-25426 Update 3
-1. 下载 FixSynoboot.sh，上传至黑群晖
-2. `sudo cp FixSynoboot.sh /usr/local/etc/rc.d`
-3. `sudo chmod 755 /usr/local/etc/rc.d/FixSynoboot.sh`
-4. 重启黑群晖
-5. 控制面板 - 更新和还原 - 手动更新 DSM - 选择已下载的 synology_broadwell_3617xs.pat
-6. 升级成功
+```sh
+./rploader.sh backup now
+./rploader.sh build broadwellnk-7.0.1-42218 auto
+poweroff                                            #虚拟机关机
+```
+
+## 再次修改虚拟机配置
+网卡 MAC 地址改为上一步记下的 MAC 地址。
+
+## 虚拟机再次开机
+1. 约 1 分钟后，本地计算机浏览器访问 <http://find.synology.com>，寻找本地网络中的黑群晖。
+2. 找到黑虚拟后，按提示安装 DSM 7.0.1-42218。
+3. 按页面提示等待几分钟后，登录 DSM，此处不赘述。
+4. 虚拟机关机。
+
+## 第三次修改虚拟机配置
+1. SSH 登录到 ESXi，将连接在主板 SATA 接口的硬盘设置 RDM，使用如下格式的命令：
+
+`vmkfstools -z /vmfs/devices/disks/t... /vmfs/volumes/datastore1/XPEnology/..._RDM.vmdk`
+
+2. 虚拟机添加现有硬盘，使用上面设置过 RDM 的 vmdk 文件，控制器均选『SATA 控制器 1:x』，x 从 1 递增。
+3. 添加 PCI-E 设备，包括 PCI-E 转 SATA 扩展卡和第二块网卡。
+
+## 虚拟机第三次开机
+1. 开机后，在黑群晖中添加上一步加入的物理硬盘。
+2. 在控制面板中开启 SSH，用 SSH 登录黑群晖，执行以下命令安装 Open VM Tools：
+
+```
+sudo mkdir /root/.ssh
+sudo docker run -d --restart=always --net=host -v /root/.ssh/:/root/.ssh/ --name open-vm-tools yalewp/xpenology-open-vm-tools
+```
 
 ## 参考文献
-1. [Tutorial: Install DSM 6.2 on ESXi 6.7](<https://xpenology.com/forum/topic/13061-tutorial-install-dsm-62-on-esxi-67/>)
-2. [Tutorial/Reference: 6.x Loaders and Platforms](<https://xpenology.com/forum/topic/13333-tutorialreference-6x-loaders-and-platforms/>)
-3. [Running 6.2.3 on ESXi? Synoboot is BROKEN, fix available](<https://xpenology.com/forum/topic/28183-running-623-on-esxi-synoboot-is-broken-fix-available/>)
+1. [tinycore-redpill](<https://github.com/pocopico/tinycore-redpill>)
+2. [**Xpenology 7.0.1 on ESXi 7.x**](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)（特别重要）
+3. [How to passthrough SATA drives directly on VMWare EXSI 6.5 as RDMs](<https://gist.github.com/Hengjie/1520114890bebe8f805d337af4b3a064>)
+4. [docker-xpenology-open-vm-tools](https://github.com/yale-wp/docker-xpenology-open-vm-tools>)
