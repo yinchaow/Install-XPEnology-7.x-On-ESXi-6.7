@@ -2,12 +2,12 @@
 
 本文以在 ESXi 6.7 上安装 DS3622xs+ 为例。共有 7 块物理硬盘，其中 3 块连接在主板 SATA 接口，4 块连接在 PCI-E 转 SATA 扩展卡。
 
-方法参照 [tmyers07](<https://github.com/tmyers07>) 的[教程](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)，稍作改动。
-
-|DS3622xs+ 主要硬件|规格|
+|群晖 DS3622xs+ 主要硬件|规格|
 | ----------- | ----------- |
 |CPU|Intel Xeon D-1531 (Broadwell)|
 |盘位|12，扩展可至 36|
+
+方法参照 [tmyers07](<https://github.com/tmyers07>) 的[教程](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)，稍作改动。
 
 ## 下载
 - [tinycore-redpill 虚拟硬盘文件](<https://drive.google.com/drive/folders/1nRoggLEVLRbKagIaP3aE28m73agiEGpQ>)
