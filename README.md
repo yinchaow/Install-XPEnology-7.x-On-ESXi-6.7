@@ -64,7 +64,7 @@ poweroff                                            #虚拟机关机
 vmkfstools -z /vmfs/devices/disks/[t...] /vmfs/volumes/datastore1/XPEnology/[...]_RDM.vmdk
 ```
 
-2. 虚拟机添加现有硬盘，使用上面设置过 RDM 的 vmdk 文件，控制器均选『SATA 控制器 1:x』，x 从 1 递增。
+2. 虚拟机添加三块现有硬盘，依次使用上面设置过 RDM 的三个 vmdk 文件，控制器选『SATA 控制器 1:x』，x 从 1 至 3。
 3. 虚拟机添加两个 PCI-E 设备，包括 PCI-E 转 SATA 扩展卡和 PCI-E 网卡。
 
 ## 虚拟机第三次开机
