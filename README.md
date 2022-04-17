@@ -60,7 +60,7 @@ poweroff                                            #虚拟机关机
 ## 第三次修改虚拟机配置
 1. SSH 登录到 ESXi，将连接在主板 SATA 接口的三块硬盘分别设置 RDM。使用 `ls -l /vmfs/devices/disks/` 查看硬盘文件名，然后使用如下格式的命令设置 RDM：
 
-`vmkfstools -z /vmfs/devices/disks/t... /vmfs/volumes/datastore1/XPEnology/..._RDM.vmdk`
+`vmkfstools -z /vmfs/devices/disks/[t...] /vmfs/volumes/datastore1/XPEnology/[...]_RDM.vmdk`
 
 2. 虚拟机添加现有硬盘，使用上面设置过 RDM 的 vmdk 文件，控制器均选『SATA 控制器 1:x』，x 从 1 递增。
 3. 添加两个 PCI-E 设备，包括 PCI-E 转 SATA 扩展卡和 PCI-E 网卡。
