@@ -39,7 +39,7 @@ sudo su
 ```
 
 5. 记下上一步生成的 MAC 地址。
-6. 用 vi 修改 user_config.json，设置 DiskIdxMap 和 SataPortMap 参数。以 4 个 SATA 接口主板加一块 PCI-E 转 4 SATA 接口扩展卡为例，DiskIdxMap=310000，SataPortMap=144。
+6. 用 vi 修改 user_config.json，设置 DiskIdxMap 和 SataPortMap 参数。本文，DiskIdxMap=310000，SataPortMap=144。
 7. 依次执行以下命令：
 
 ```sh
