@@ -9,7 +9,7 @@
 
 ## 下载
 - [tinycore-redpill 虚拟硬盘文件](<https://drive.google.com/drive/folders/1nRoggLEVLRbKagIaP3aE28m73agiEGpQ>)
-- [DSM v7.0.1-42218](<https://global.download.synology.com/download/DSM/release/7.0.1/42218/DSM_DS3622xs%2B_42218.pat>)（来自 [DSM 官网](<https://archive.synology.com/download/Os/DSM>)）
+- [DSM v7.0.1-42218](<https://global.download.synology.com/download/DSM/release/7.0.1/42218/DSM_DS3622xs%2B_42218.pat>)（来自 [群晖官网](<https://archive.synology.com/download/Os/DSM>)）
 
 ## 新建虚拟机
 1. 在 ESXi 新建虚拟机，假定虚拟机名为『XPEnology』。
@@ -51,7 +51,7 @@ poweroff                                            #虚拟机关机
 
 ## 虚拟机再次开机
 1. 约 1 分钟后，本地计算机浏览器访问 <http://find.synology.com>，寻找本地网络中的黑群晖。
-2. 找到黑虚拟后，按提示安装 DSM 7.0.1-42218。
+2. 找到黑群晖后，按提示上传已下载的 DSM_DS3622xs+\_42218.pat，安装 DSM v7.0.1-42218。
 3. 按页面提示等待几分钟后，登录 DSM，按提示进行初始化设置，此处不赘述。
 4. 虚拟机关机。
 
