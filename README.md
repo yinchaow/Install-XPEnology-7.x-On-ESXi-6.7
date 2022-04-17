@@ -22,14 +22,14 @@
 6. 虚拟机选项 - 引导选项 - 固件，改为『BIOS』。
 7. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传已下载的 tinycore-redpill.v0.4.6-flat.vmdk 和 tinycore-redpill.v0.4.6.vmdk。
 
-## 修改虚拟机配置
+## 第一次修改虚拟机配置
 1. 虚拟机添加一块现有硬盘，选 tinycore-redpill.v0.4.6.vmdk，控制器选为『SATA 控制器 0:0』。
 2. 虚拟机添加一块标准硬盘，大小可设为 50GB，厚置备延迟置零，控制器选为『SATA 控制器 1:0』。
 
-## 设置 Tinycore Redpill
-1. 虚拟机开机，待进入图形界面，在其桌面鼠标右击，在弹出菜单中用键盘方向键依次选 Applications 和 Terminal，打开终端。
-2. 在终端用 `ifconfig` 命令查看 IP 地址。
-3. 在本地计算机使用 SSH 登录 Tinycore Redpill，用户名为 `tc`，密码为 `P@ssw0rd`。
+## 虚拟机第一次开机
+1. 待进入 Tinycore 的图形界面，在其桌面鼠标右击，弹出菜单中用键盘方向键依次选 Applications 和 Terminal，打开终端。
+2. 终端中，用 `ifconfig` 命令查看 IP 地址。
+3. 在本地计算机使用 SSH 登录 Tinycore，用户名为 `tc`，密码为 `P@ssw0rd`。
 4. 依次执行以下命令：
 
 ```sh
@@ -39,7 +39,7 @@ sudo su
 ```
 
 5. 记下上一步生成的 MAC 地址。
-6. 用 vi 修改 user_config.json，设置 DiskIdxMap 和 SataPortMap 参数。本文，DiskIdxMap=310000，SataPortMap=144。
+6. 用 vi 修改 user_config.json，设置 DiskIdxMap 和 SataPortMap 参数。本文，DiskIdxMap=**310000**，SataPortMap=**144**。
 7. 依次执行以下命令：
 
 ```sh
@@ -48,10 +48,10 @@ sudo su
 poweroff                                            #虚拟机关机
 ```
 
-## 再次修改虚拟机配置
+## 第二次修改虚拟机配置
 网卡 MAC 地址改为上一步记下的 MAC 地址。
 
-## 虚拟机再次开机
+## 虚拟机第二次开机
 1. 约 1 分钟后，本地计算机浏览器访问 <http://find.synology.com>，寻找本地网络中的黑群晖。
 2. 找到黑群晖后，按提示上传已下载的 DSM_DS3622xs+\_42218.pat，安装 DSM v7.0.1-42218。
 3. 按页面提示等待几分钟后，登录 DSM，按提示进行初始化设置，此处不赘述。
@@ -65,7 +65,7 @@ vmkfstools -z /vmfs/devices/disks/[t...] /vmfs/volumes/datastore1/XPEnology/[...
 ```
 
 2. 虚拟机添加三块现有硬盘，依次使用上面设置过 RDM 的三个 vmdk 文件，控制器选『SATA 控制器 1:x』，x 从 1 至 3。
-3. 虚拟机添加两个 PCI-E 设备，包括 PCI-E 转 SATA 扩展卡和 PCI-E 网卡。
+3. 虚拟机添加两个 PCI-E 设备：PCI-E 转 SATA 扩展卡、PCI-E 网卡。
 
 ## 虚拟机第三次开机
 1. 开机后，在黑群晖中添加上一步加入的物理硬盘，此处不赘述。
