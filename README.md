@@ -23,13 +23,13 @@
 7. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传已下载的 tinycore-redpill.v0.4.6-flat.vmdk 和 tinycore-redpill.v0.4.6.vmdk。
 
 ## 修改虚拟机配置
-1. 添加一块现有硬盘，选 tinycore-redpill.v0.4.6.vmdk，控制器选为『SATA 控制器 0:0』。
-2. 添加一块标准硬盘，大小可设为 50GB，厚置备延迟置零，控制器选为『SATA 控制器 1:0』。
+1. 虚拟机添加一块现有硬盘，选 tinycore-redpill.v0.4.6.vmdk，控制器选为『SATA 控制器 0:0』。
+2. 虚拟机添加一块标准硬盘，大小可设为 50GB，厚置备延迟置零，控制器选为『SATA 控制器 1:0』。
 
 ## 设置 Tinycore Redpill
 1. 虚拟机开机，待进入图形界面，在其桌面鼠标右击，在弹出菜单中用键盘方向键依次选 Applications 和 Terminal，打开终端。
 2. 在终端用 `ifconfig` 命令查看 IP 地址。
-3. 在本地计算机使用 SSH 访问 Tinycore Redpill，用户名为 `tc`，密码为 `P@ssw0rd`。
+3. 在本地计算机使用 SSH 登录 Tinycore Redpill，用户名为 `tc`，密码为 `P@ssw0rd`。
 4. 依次执行以下命令：
 
 ```sh
@@ -58,17 +58,18 @@ poweroff                                            #虚拟机关机
 4. 虚拟机关机。
 
 ## 第三次修改虚拟机配置
-1. SSH 登录到 ESXi，将连接在主板 SATA 接口的三块硬盘分别设置 RDM。使用 `ls -l /vmfs/devices/disks/` 查看硬盘文件名，然后使用如下格式的命令设置 RDM：
+1. 在本地计算机用 SSH 登录到 ESXi，将连接在主板 SATA 接口的三块硬盘分别设置 RDM。使用 `ls -l /vmfs/devices/disks/` 查看硬盘文件名，然后使用如下格式的命令设置 RDM：
 
 `vmkfstools -z /vmfs/devices/disks/[t...] /vmfs/volumes/datastore1/XPEnology/[...]_RDM.vmdk`
 
 2. 虚拟机添加现有硬盘，使用上面设置过 RDM 的 vmdk 文件，控制器均选『SATA 控制器 1:x』，x 从 1 递增。
-3. 添加两个 PCI-E 设备，包括 PCI-E 转 SATA 扩展卡和 PCI-E 网卡。
+3. 虚拟机添加两个 PCI-E 设备，包括 PCI-E 转 SATA 扩展卡和 PCI-E 网卡。
 
 ## 虚拟机第三次开机
 1. 开机后，在黑群晖中添加上一步加入的物理硬盘，此处不赘述。
-2. 安装 Docker 套件。
-3. 在控制面板中开启 SSH，用 SSH 登录黑群晖，执行以下命令安装 Open VM Tools：
+2. 黑群晖安装 Docker 套件。
+3. 在黑群晖控制面板中开启 SSH。
+4. 在本地计算机用 SSH 登录黑群晖，执行以下命令安装 Open VM Tools：
 
 ```
 sudo mkdir /root/.ssh
