@@ -20,7 +20,7 @@
 4. 删除原有硬盘、SCSI 控制器、USB 控制器、光驱。
 5. 添加一个 SATA 控制器，此时应共有两个，编号分别是『SATA 控制器 0』和『SATA 控制器 1』。
 6. 虚拟机选项 - 引导选项 - 固件，改为『BIOS』。
-7. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传 tinycore-redpill.v0.4.6-flat.vmdk 和 tinycore-redpill.v0.4.6.vmdk。
+7. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传已下载的 tinycore-redpill.v0.4.6-flat.vmdk 和 tinycore-redpill.v0.4.6.vmdk。
 
 ## 修改虚拟机配置
 1. 添加一块现有硬盘，选 tinycore-redpill.v0.4.6.vmdk，控制器选为『SATA 控制器 0:0』。
