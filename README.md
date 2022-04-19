@@ -8,8 +8,8 @@
 |DS3617xs|Intel Xeon D-1527 (2015-11-1)|Broadwell|36|
 |DS916+|Intel Pentium N3710 (2015-3)|Braswell|9|
 |DS918+|Intel Celeron J3455 (2016-8-30)|Apollo Lake|9|
-|**DS920+**|**Intel Celeron J4125 (2019-11)**|**Gemini Lake Refresh**|**9**|
-|**DS3622xs+**|**Intel Xeon D-1531 (2015-11-1)**|**Broadwell**|**36**|
+|[**DS920+**](<https://www.synology.com/en-global/products/DS920+>)|**Intel Celeron J4125 (2019-11)**|**Gemini Lake Refresh**|**9**|
+|[**DS3622xs+**](<https://www.synology.com/en-global/products/DS3622xs+>)|**Intel Xeon D-1531 (2015-11-1)**|**Broadwell**|**36**|
 |FS6400|Intel Xeon Silver 4110 (2017-7-11)|Skylake|48/72|
 |DVA3219|Intel Atom C3538 (2017-8-15)|Denverton|14|
 |DVA3221|Intel Atom C3538 (2017-8-15)|Denverton|14|
