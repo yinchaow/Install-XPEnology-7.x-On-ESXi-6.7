@@ -4,7 +4,7 @@
 
 |型号|CPU|微架构|盘位|
 | -------- | -------- | -------- | -------- |
-|DS3615xs|Intel Core i3-4130|Haswell (2013-9-1)|36|
+|DS3615xs|Intel Core i3-4130 (2013-9-1)|Haswell|36|
 |DS3617xs|Intel Xeon D-1527 (2015-11-1)|Broadwell|36|
 |DS916+|Intel Pentium N3710 (2015-3)|Braswell|9|
 |DS918+|Intel Celeron J3455 (2016-8-30)|Apollo Lake|9|
