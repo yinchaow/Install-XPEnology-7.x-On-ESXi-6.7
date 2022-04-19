@@ -1,6 +1,6 @@
 # 在 ESXi 6.7 上安装黑群晖 DSM 7
 
-目前 [RedPill](<https://github.com/RedPill-TTG/redpill-load>) 支持的黑群晖型号：
+目前 [RedPill Loader Builder](<https://github.com/RedPill-TTG/redpill-load>) 支持的黑群晖型号：
 
 |型号|CPU|微架构|盘位|
 | -------- | -------- | -------- | -------- |
