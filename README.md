@@ -1,11 +1,21 @@
 # 在 ESXi 6.7 上安装黑群晖 DSM 7
 
-本文以在 ESXi 6.7 上安装 DS3622xs+ 为例。共有 7 块物理硬盘，其中 3 块连接在主板 SATA 接口，作 RDM 供黑群晖使用，4 块连接在 PCI-E 转 SATA 扩展卡，直通给黑群晖。另有一块 PCI-E 网卡直通给黑群晖。
+目前 Redpill 支持的黑群晖型号：
 
-|群晖 DS3622xs+ 主要配置|规格|
-| ----------- | ----------- |
-|CPU|Intel Xeon D-1531 (Broadwell)|
-|盘位|12，扩展可至 36|
+|型号|CPU|微架构|盘位|
+| -------- | -------- | -------- | -------- |
+|DS3615xs|Intel Core i3-4130|Haswell (2013-9-1)|36|
+|DS3617xs|Intel Xeon D-1527 (2015-11-1)|Broadwell|36|
+|DS916+|Intel Pentium N3710 (2015-3)|Braswell|9|
+|DS918+|Intel Celeron J3455 (2016-8-30)|Apollo Lake|9|
+|DS920+|Intel Celeron J4125 (2019-11)|Gemini Lake Refresh|9|
+|DS3622xs+|Intel Xeon D-1531 (2015-11-1)|Broadwell|36|
+|FS6400|Intel Xeon Silver 4110 (2017-7-11)|Skylake|48/72|
+|DVA3219|Intel Atom C3538 (2017-8-15)|Denverton|14|
+|DVA3221|Intel Atom C3538 (2017-8-15)|Denverton|14|
+|DS1621+|AMD Ryzen V1500B (2018-12)|Zen|16|
+
+本文以在 ESXi 6.7 上安装 DS3622xs+ 为例。共有 7 块物理硬盘，其中 3 块连接在主板 SATA 接口，作 RDM 供黑群晖使用，4 块连接在 PCI-E 转 SATA 扩展卡，直通给黑群晖。另有一块 PCI-E 网卡直通给黑群晖。
 
 方法参照 [tmyers07](<https://github.com/tmyers07>) 的[教程](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)，稍作改动。
 
