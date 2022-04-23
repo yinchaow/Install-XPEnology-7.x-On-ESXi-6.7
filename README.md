@@ -29,12 +29,14 @@
 1. 解压 tinycore-redpill.v0.4.6.img.gz，得到 img 文件。
 2. 安装 StarWind V2V Converter。
 3. 打开 StarWind V2V Converter，依次选择如下：
+
   - Local file
   - 选择上述 img 文件
   - Local file
   - VMDK
   - ESXi server image
   - ESXi pre-allocated image
+
 4. 最终转换得到两个文件，分别是 tinycore-redpill.v0.4.6-flat.vmdk 和 tinycore-redpill.v0.4.6.vmdk。
 
 ## 新建虚拟机
