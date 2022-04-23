@@ -20,9 +20,22 @@
 方法参照 [tmyers07](<https://github.com/tmyers07>) 的[教程](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)，稍作改动。
 
 ## 下载
-- [tinycore-redpill 虚拟硬盘文件](<https://drive.google.com/drive/folders/1nRoggLEVLRbKagIaP3aE28m73agiEGpQ>)（tmyers07 提供，目前版本是 0.4.6）
+- [tinycore-redpill 虚拟硬盘文件 tinycore-redpill.img.gz](<https://github.com/pocopico/tinycore-redpill>)（img 版，目前版本是 0.4.6）
+- [StarWind V2V Converter](<https://www.starwindsoftware.com/starwind-v2v-converter>)
 - [DSM v7.0.1-42218](<https://global.download.synology.com/download/DSM/release/7.0.1/42218/DSM_DS3622xs%2B_42218.pat>)（来自 [群晖官网](<https://archive.synology.com/download/Os/DSM>)）
 - [Offline bundle for ESXi 6.x - esxui-offline-bundle-6.x-10692217.zip](<https://flings.vmware.com/esxi-embedded-host-client>)（可能会用到）
+
+## 转换虚拟硬盘
+1. 解压 tinycore-redpill.v0.4.6.img.gz，得到 img 文件。
+2. 安装 StarWind V2V Converter。
+3. 打开 StarWind V2V Converter，依次选择如下：
+  - Local file
+  - 选择上述 img 文件
+  - Local file
+  - VMDK
+  - ESXi server image
+  - ESXi pre-allocated image
+4. 最终转换得到两个文件，分别是 tinycore-redpill.v0.4.6-flat.vmdk 和 tinycore-redpill.v0.4.6.vmdk。
 
 ## 新建虚拟机
 1. 在 ESXi 新建虚拟机，此处假定虚拟机名为『XPEnology』。
@@ -31,7 +44,7 @@
 4. 删除原有硬盘、SCSI 控制器、USB 控制器、光驱。
 5. 添加一个 SATA 控制器，此时应共有两个，编号分别是『SATA 控制器 0』和『SATA 控制器 1』。
 6. 虚拟机选项 - 引导选项 - 固件，改为『BIOS』。
-7. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传已下载的 tinycore-redpill.v0.4.6-flat.vmdk 和 tinycore-redpill.v0.4.6.vmdk。
+7. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传已转换的 tinycore-redpill.v0.4.6-flat.vmdk 和 tinycore-redpill.v0.4.6.vmdk。
 
 ## 第一次修改虚拟机配置
 1. 虚拟机添加一块现有硬盘，选 tinycore-redpill.v0.4.6.vmdk，控制器选为『SATA 控制器 0:0』。
@@ -94,7 +107,7 @@ sudo mkdir /root/.ssh
 sudo docker run -d --restart=always --net=host -v /root/.ssh/:/root/.ssh/ --name open-vm-tools yalewp/xpenology-open-vm-tools
 ```
 
-## 参考文献
+## 参考
 1. [tinycore-redpill](<https://github.com/pocopico/tinycore-redpill>)
 2. [**Xpenology 7.0.1 on ESXi 7.x**](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)**（特别重要）**
 3. [How to passthrough SATA drives directly on VMWare EXSI 6.5 as RDMs](<https://gist.github.com/Hengjie/1520114890bebe8f805d337af4b3a064>)
