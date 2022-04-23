@@ -1,4 +1,4 @@
-# 在 ESXi 6.7 上安装黑群晖 DSM 7
+# 在 ESXi 6.7 上安装黑群晖 DSM 7.1
 
 目前 [RedPill Loader Builder](<https://github.com/RedPill-TTG/redpill-load>) 支持的黑群晖型号：
 
@@ -17,12 +17,13 @@
 
 本文以在 ESXi 6.7 上安装 DS3622xs+ 为例。共有 7 块物理硬盘，其中 3 块连接在主板 SATA 接口，作 RDM 供黑群晖使用，4 块连接在 PCI-E 转 SATA 扩展卡，直通给黑群晖。另有一块 PCI-E 网卡直通给黑群晖。
 
-方法参照 [tmyers07](<https://github.com/tmyers07>) 的[教程](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)，稍作改动。
+总体思路是先安装 7.0.1，再升级到 7.1。安装 7.0.1 的方法参考 [tmyers07](<https://github.com/tmyers07>) 的[教程](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)，升级到 7.1 的方法参考 Peter Suh 的[教程](<https://xpenology.com/forum/topic/60130-redpill-tinycore-loader-installation-guide-for-dsm-71-baremetal/>)。
 
 ## 下载
 - [tinycore-redpill 虚拟硬盘文件 tinycore-redpill.img.gz](<https://github.com/pocopico/tinycore-redpill>)（img 版，目前版本是 0.4.6）
 - [StarWind V2V Converter](<https://www.starwindsoftware.com/starwind-v2v-converter>)
 - [DSM v7.0.1-42218](<https://global.download.synology.com/download/DSM/release/7.0.1/42218/DSM_DS3622xs%2B_42218.pat>)（来自 [群晖官网](<https://archive.synology.com/download/Os/DSM>)）
+- [DSM v7.1-42661](<https://global.download.synology.com/download/DSM/release/7.1/42661/DSM_DS3622xs%2B_42661.pat>)
 - [Offline bundle for ESXi 6.x - esxui-offline-bundle-6.x-10692217.zip](<https://flings.vmware.com/esxi-embedded-host-client>)（可能会用到）
 
 ## 转换虚拟硬盘
@@ -68,7 +69,7 @@ sudo su
 
 ```sh
 ./rploader.sh backup now
-./rploader.sh build broadwellnk-7.0.1-42218 auto
+./rploader.sh build broadwellnk-7.0.1-42218
 poweroff                                            #虚拟机关机
 ```
 
@@ -80,6 +81,28 @@ poweroff                                            #虚拟机关机
 2. 找到黑群晖后，按提示上传已下载的 DSM_DS3622xs+\_42218.pat，安装 DSM v7.0.1-42218。
 3. 按页面提示等待几分钟后，登录 DSM，按提示进行初始化设置，此处不赘述。
 4. 虚拟机关机。
+
+## 升级到 7.1
+1. 虚拟机开机，4 秒钟内选择进入 Tiny Core Image Build。
+2. 在本地计算机使用 SSH 登录 Tinycore（即黑群晖的 IP），用户名为 `tc`，密码为 `P@ssw0rd`。
+3. 执行 `ls -l /home/tc/`，查看 custom-module 目录是否已链接到 /mnt/sda3/auxfiles，即是否有 `custom-module -> /mnt/sda3/auxfiles`。如已链接，则跳到下一步。如未链接，则需重新编译一次 7.0.1，执行以下命令：
+
+```sh
+sudo ./rploader.sh build broadwellnk-7.0.1-42218
+```
+
+4. 依次执行以下命令：
+
+```sh
+sudo su
+./rploader.sh fullupgrade now
+./rploader.sh clean now
+./rploader.sh build broadwellnk-7.1.0-42661
+./rploader.sh clean now
+rm -rf /mnt/sdb3/auxfiles /home/tc/custom-module
+./rploader.sh backup now
+poweroff                                            #虚拟机关机
+```
 
 ## 第三次修改虚拟机配置
 1. 在本地计算机用 SSH 登录到 ESXi，将连接在主板 SATA 接口的三块硬盘分别设置 RDM。使用 `ls -l /vmfs/devices/disks/` 查看硬盘文件名，然后使用如下格式的命令设置 RDM：
@@ -110,7 +133,8 @@ sudo docker run -d --restart=always --net=host -v /root/.ssh/:/root/.ssh/ --name
 ## 参考
 1. [tinycore-redpill](<https://github.com/pocopico/tinycore-redpill>)
 2. [**Xpenology 7.0.1 on ESXi 7.x**](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)**（特别重要）**
-3. [How to passthrough SATA drives directly on VMWare EXSI 6.5 as RDMs](<https://gist.github.com/Hengjie/1520114890bebe8f805d337af4b3a064>)
-4. [docker-xpenology-open-vm-tools](<https://github.com/yale-wp/docker-xpenology-open-vm-tools>)
-5. [Experiment on sata_args in grub.cfg](<https://gugucomputing.wordpress.com/2018/11/11/experiment-on-sata_args-in-grub-cfg>)
-6. [ESXi 6.7 client GUI broken - cnMaestro OVA upload fails at times](<https://community.cambiumnetworks.com/t/esxi-6-7-client-gui-broken-cnmaestro-ova-upload-fails-at-times/61731>)
+3. [RedPill TinyCore Loader Installation Guide for DSM 7.1 BareMetal](<https://xpenology.com/forum/topic/60130-redpill-tinycore-loader-installation-guide-for-dsm-71-baremetal>)
+4. [How to passthrough SATA drives directly on VMWare EXSI 6.5 as RDMs](<https://gist.github.com/Hengjie/1520114890bebe8f805d337af4b3a064>)
+5. [docker-xpenology-open-vm-tools](<https://github.com/yale-wp/docker-xpenology-open-vm-tools>)
+6. [Experiment on sata_args in grub.cfg](<https://gugucomputing.wordpress.com/2018/11/11/experiment-on-sata_args-in-grub-cfg>)
+7. [ESXi 6.7 client GUI broken - cnMaestro OVA upload fails at times](<https://community.cambiumnetworks.com/t/esxi-6-7-client-gui-broken-cnmaestro-ova-upload-fails-at-times/61731>)
