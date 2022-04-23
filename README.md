@@ -60,7 +60,6 @@
 4. 依次执行以下命令：
 
 ```sh
-sudo su
 ./rploader.sh update now                            #更新 rploader.sh 至最新
 ./rploader.sh serialgen DS3622xs+                   #生成 DS3622xs+ 的序列号和 MAC 地址，并写入 user_config.json
 ```
@@ -72,7 +71,7 @@ sudo su
 ```sh
 ./rploader.sh backup now
 ./rploader.sh build broadwellnk-7.0.1-42218
-poweroff                                            #虚拟机关机
+sudo poweroff                                            #虚拟机关机
 ```
 
 ## 第二次修改虚拟机配置
@@ -90,20 +89,19 @@ poweroff                                            #虚拟机关机
 3. 执行 `ls -l /home/tc/`，查看 custom-module 目录是否已链接到 /mnt/sda3/auxfiles，即是否有 `custom-module -> /mnt/sda3/auxfiles`。如已链接，则跳到下一步。如未链接，则需重新编译一次 7.0.1，执行以下命令：
 
 ```sh
-sudo ./rploader.sh build broadwellnk-7.0.1-42218
+./rploader.sh build broadwellnk-7.0.1-42218
 ```
 
 4. 依次执行以下命令：
 
 ```sh
-sudo su
 ./rploader.sh fullupgrade now
 ./rploader.sh clean now
 ./rploader.sh build broadwellnk-7.1.0-42661
 ./rploader.sh clean now
 rm -rf /mnt/sdb3/auxfiles /home/tc/custom-module
 ./rploader.sh backup now
-poweroff                                            #虚拟机关机
+sudo poweroff                                            #虚拟机关机
 ```
 
 ## 虚拟机第三次开机
