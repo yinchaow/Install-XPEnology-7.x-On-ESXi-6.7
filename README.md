@@ -106,6 +106,14 @@ rm -rf /mnt/sdb3/auxfiles /home/tc/custom-module
 poweroff                                            #虚拟机关机
 ```
 
+## 虚拟机第三次开机
+1. 选择进入 RedPill DS3622xs+ v7.1.0-42661 (SATA, Verbose)
+2. 约 1 分钟后，本地计算机浏览器访问 <http://find.synology.com>，寻找本地网络中的黑群晖。
+3. 找到黑群晖后，按提示上传已下载的 DSM_DS3622xs+\_42661.pat，安装 DSM v7.1-42661。
+4. 按页面提示等待几分钟后，登录 DSM，按提示进行设置，此处不赘述。
+5. 虚拟机关机。
+
+
 ## 第三次修改虚拟机配置
 1. 在本地计算机用 SSH 登录到 ESXi，将连接在主板 SATA 接口的三块硬盘分别设置 RDM。使用 `ls -l /vmfs/devices/disks/` 查看硬盘文件名，然后使用如下格式的命令设置 RDM：
 
@@ -121,7 +129,7 @@ vmkfstools -z /vmfs/devices/disks/[t...] /vmfs/volumes/datastore1/XPEnology/[...
 esxcli software vib install -d /vmfs/volumes/datastore1/esxui-offline-bundle-6.x-10692217.zip
 ```
 
-## 虚拟机第三次开机
+## 虚拟机第四次开机
 1. 开机后，在黑群晖中添加上一步加入的物理硬盘，此处不赘述。
 2. 黑群晖安装 Docker 套件。
 3. 在黑群晖控制面板中开启 SSH。
