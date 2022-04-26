@@ -71,7 +71,7 @@
 ```sh
 ./rploader.sh build broadwellnk-7.1.0-42661
 ./rploader.sh clean now
-rm -rf /mnt/sdb3/auxfiles
+rm -rf /mnt/sda3/auxfiles
 rm -rf /home/tc/custom-module
 rm -f /home/tc/oldpat.tar.gz
 ./rploader.sh backup now
@@ -130,7 +130,7 @@ sudo ln -s /mnt/sda3/auxfiles /home/tc/custom-module
 ./rploader.sh fullupgrade now
 ./rploader.sh build broadwellnk-7.1.0-42661
 ./rploader.sh clean now
-rm -rf /mnt/sdb3/auxfiles
+rm -rf /mnt/sda3/auxfiles
 rm -rf /home/tc/custom-module
 rm -f /home/tc/oldpat.tar.gz
 ./rploader.sh backup now
