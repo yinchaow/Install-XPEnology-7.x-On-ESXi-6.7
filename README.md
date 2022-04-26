@@ -41,11 +41,11 @@
 
 ## 新建虚拟机
 1. 在 ESXi 新建虚拟机，此处假定虚拟机名为『XPEnology』。
-2. 虚拟机操作系统类型选『Linux』，版本选『其他 4.x 或更高版本的 Linux (64位)』。
+2. 虚拟机操作系统类型选『Linux』，版本选『Debian GNU/Linux 9 (64 位)』。
 3. 内存勾选『预选所有客户机内存』。
 4. 删除原有硬盘、SCSI 控制器、USB 控制器、光驱。
 5. 添加一个 SATA 控制器，此时应共有两个，编号分别是『SATA 控制器 0』和『SATA 控制器 1』。
-6. 虚拟机选项 - 引导选项 - 固件，改为『BIOS』。
+6. 虚拟机选项 - 引导选项 - 固件，设为『BIOS』。
 7. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传已转换的 tinycore-redpill.v0.4.6-flat.vmdk 和 tinycore-redpill.v0.4.6.vmdk。
 
 ## 第一次修改虚拟机配置
@@ -104,7 +104,7 @@ esxcli software vib install -d /vmfs/volumes/datastore1/esxui-offline-bundle-6.x
 ```
 
 ## 虚拟机第三次开机
-1. 开机后，在黑群晖中添加上一步加入的物理硬盘，此处不赘述。
+1. 开机后，在黑群晖中添加上一步加入的物理硬盘。如果这些是在其他黑群晖用过的硬盘，那么打开『存储管理器』，在『存储空间』下有『可用池1』、『可用池2』等存储池，在每个存储池点击『在线重组』，这样不会丢失数据。
 2. 黑群晖安装 Docker 套件。
 3. 在黑群晖控制面板中开启 SSH。
 4. 在本地计算机用 SSH 登录黑群晖，执行以下命令安装 Open VM Tools：
