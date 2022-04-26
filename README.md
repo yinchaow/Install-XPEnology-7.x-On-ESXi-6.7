@@ -19,13 +19,12 @@
 
 本文以在 ESXi 6.7 上安装 DS3622xs+ 为例。共有 7 块物理硬盘，其中 3 块连接在主板 SATA 接口，作 RDM 供黑群晖使用，4 块连接在 PCI-E 转 SATA 扩展卡，直通给黑群晖。另有一块 PCI-E 网卡直通给黑群晖。
 
-总体思路是先安装 7.0.1，再升级到 7.1。安装 7.0.1 的方法参考 [tmyers07](<https://github.com/tmyers07>) 的[教程](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)，升级到 7.1 的方法参考 Peter Suh 的[教程](<https://xpenology.com/forum/topic/60130-redpill-tinycore-loader-installation-guide-for-dsm-71-baremetal/>)。
+安装方法参考 [tmyers07](<https://github.com/tmyers07>) 的[教程](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)，和 Peter Suh 的[教程](<https://xpenology.com/forum/topic/60130-redpill-tinycore-loader-installation-guide-for-dsm-71-baremetal/>)。
 
 ## 下载
 - [tinycore-redpill 虚拟硬盘文件 tinycore-redpill.img.gz](<https://github.com/pocopico/tinycore-redpill>)（img 版，目前版本是 0.4.6）
 - [StarWind V2V Converter](<https://www.starwindsoftware.com/starwind-v2v-converter>)
-- [DSM v7.0.1-42218](<https://global.download.synology.com/download/DSM/release/7.0.1/42218/DSM_DS3622xs%2B_42218.pat>)（来自 [群晖官网](<https://archive.synology.com/download/Os/DSM>)）
-- [DSM v7.1-42661](<https://global.download.synology.com/download/DSM/release/7.1/42661/DSM_DS3622xs%2B_42661.pat>)
+- [DSM v7.1.0-42661](<https://global.download.synology.com/download/DSM/release/7.1/42661/DSM_DS3622xs%2B_42661.pat>)
 - [Offline bundle for ESXi 6.x - esxui-offline-bundle-6.x-10692217.zip](<https://flings.vmware.com/esxi-embedded-host-client>)（可能会用到）
 
 ## 转换虚拟硬盘
@@ -61,16 +60,21 @@
 
 ```sh
 ./rploader.sh update now                            #更新 rploader.sh 至最新
+./rploader.sh fullupgrade now
 ./rploader.sh serialgen DS3622xs+                   #生成 DS3622xs+ 的序列号和 MAC 地址，并写入 user_config.json
 ```
 
 5. 记下上一步生成的 MAC 地址。
-6. 用 vi 修改 user_config.json，设置 DiskIdxMap 和 SataPortMap 参数。本文，DiskIdxMap=**310000**，SataPortMap=**144**。
+6. 用 vi 修改 user_config.json，设置 DiskIdxMap 和 SataPortMap 参数。本文，SataPortMap=*144*，DiskIdxMap=*310000*。
 7. 依次执行以下命令：
 
 ```sh
+./rploader.sh build broadwellnk-7.1.0-42661
+./rploader.sh clean now
+rm -rf /mnt/sdb3/auxfiles
+rm -rf /home/tc/custom-module
+rm -f /home/tc/oldpat.tar.gz
 ./rploader.sh backup now
-./rploader.sh build broadwellnk-7.0.1-42218
 sudo poweroff                                            #虚拟机关机
 ```
 
@@ -78,39 +82,11 @@ sudo poweroff                                            #虚拟机关机
 网卡 MAC 地址改为上一步记下的 MAC 地址。
 
 ## 虚拟机第二次开机
-1. 约 1 分钟后，本地计算机浏览器访问 <http://find.synology.com>，寻找本地网络中的黑群晖。
-2. 找到黑群晖后，按提示上传已下载的 DSM_DS3622xs+\_42218.pat，安装 DSM v7.0.1-42218。
-3. 按页面提示等待几分钟后，登录 DSM，按提示进行初始化设置，此处不赘述。
-4. 虚拟机关机。
-
-## 升级到 7.1
-1. 虚拟机开机，4 秒钟内选择进入 Tiny Core Image Build。
-2. 在本地计算机使用 SSH 登录 Tinycore（即黑群晖的 IP），用户名为 `tc`，密码为 `P@ssw0rd`。
-3. 执行 `ls -l /home/tc/`，查看 custom-module 目录是否已链接到 /mnt/sda3/auxfiles，即是否有 `custom-module -> /mnt/sda3/auxfiles`。如已链接，则跳到下一步。如未链接，则需重新编译一次 7.0.1，执行以下命令：
-
-```sh
-./rploader.sh build broadwellnk-7.0.1-42218
-```
-
-4. 依次执行以下命令：
-
-```sh
-./rploader.sh fullupgrade now
-./rploader.sh clean now
-./rploader.sh build broadwellnk-7.1.0-42661
-./rploader.sh clean now
-rm -rf /mnt/sdb3/auxfiles /home/tc/custom-module
-./rploader.sh backup now
-sudo poweroff                                            #虚拟机关机
-```
-
-## 虚拟机第三次开机
-1. 选择进入 RedPill DS3622xs+ v7.1.0-42661 (SATA, Verbose)
-2. 约 1 分钟后，本地计算机浏览器访问 <http://find.synology.com>，寻找本地网络中的黑群晖。
-3. 找到黑群晖后，按提示上传已下载的 DSM_DS3622xs+\_42661.pat，安装 DSM v7.1-42661。
-4. 按页面提示等待几分钟后，登录 DSM，按提示进行设置，此处不赘述。
+1. 选择进入 RedPill DS3622xs+ v7.1.0-42661 Beta (SATA, Verbose)
+2. 约 1 分钟后，本地计算机浏览器访问 <http://find.synology.com> 或使用 [Synology Assistant](<https://www.synology.com/en-us/support/download/DS3622xs+?version=7.1#utilities>)，寻找本地网络中的黑群晖。
+3. 找到黑群晖后，按提示上传已下载的 DSM_DS3622xs+\_42661.pat，安装 DSM v7.1.0-42661。
+4. 按页面提示等待几分钟后，登录 DSM，按提示进行初始化设置，此处不赘述。
 5. 虚拟机关机。
-
 
 ## 第三次修改虚拟机配置
 1. 在本地计算机用 SSH 登录到 ESXi，将连接在主板 SATA 接口的三块硬盘分别设置 RDM。使用 `ls -l /vmfs/devices/disks/` 查看硬盘文件名，然后使用如下格式的命令设置 RDM：
@@ -127,7 +103,7 @@ vmkfstools -z /vmfs/devices/disks/[t...] /vmfs/volumes/datastore1/XPEnology/[...
 esxcli software vib install -d /vmfs/volumes/datastore1/esxui-offline-bundle-6.x-10692217.zip
 ```
 
-## 虚拟机第四次开机
+## 虚拟机第三次开机
 1. 开机后，在黑群晖中添加上一步加入的物理硬盘，此处不赘述。
 2. 黑群晖安装 Docker 套件。
 3. 在黑群晖控制面板中开启 SSH。
@@ -136,6 +112,29 @@ esxcli software vib install -d /vmfs/volumes/datastore1/esxui-offline-bundle-6.x
 ```
 sudo mkdir /root/.ssh
 sudo docker run -d --restart=always --net=host -v /root/.ssh/:/root/.ssh/ --name open-vm-tools yalewp/xpenology-open-vm-tools
+```
+
+## 从 7.0 升级到 7.1
+此部分适用于已安装 7.0.1，需要升级到 7.1.0-42661 且不丢失数据。
+1. 虚拟机开机，4 秒钟内选择进入 Tiny Core Image Build。
+2. 在本地计算机使用 SSH 登录 Tinycore（即黑群晖的 IP），用户名为 `tc`，密码为 `P@ssw0rd`。
+3. 执行 `ls -l /home/tc/`，查看 custom-module 目录是否已链接到 /mnt/sda3/auxfiles，即是否有 `custom-module -> /mnt/sda3/auxfiles`。如已链接，则跳到下一步。如未链接，则执行以下命令：
+
+```sh
+sudo ln -s /mnt/sda3/auxfiles /home/tc/custom-module
+```
+
+4. 依次执行以下命令：
+
+```sh
+./rploader.sh fullupgrade now
+./rploader.sh build broadwellnk-7.1.0-42661
+./rploader.sh clean now
+rm -rf /mnt/sdb3/auxfiles
+rm -rf /home/tc/custom-module
+rm -f /home/tc/oldpat.tar.gz
+./rploader.sh backup now
+sudo poweroff                                            #虚拟机关机
 ```
 
 ## 参考
