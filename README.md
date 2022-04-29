@@ -82,14 +82,14 @@ sudo poweroff                                            #虚拟机关机
 网卡 MAC 地址改为上一步记下的 MAC 地址。
 
 ## 虚拟机第二次开机
-1. 选择进入 RedPill DS3622xs+ v7.1.0-42661 Beta (SATA, Verbose)
+1. 选择进入『RedPill DS3622xs+ v7.1.0-42661 Beta (SATA, Verbose)』。
 2. 约 1 分钟后，本地计算机浏览器访问 <http://find.synology.com> 或使用 [Synology Assistant](<https://www.synology.com/en-us/support/download/DS3622xs+?version=7.1#utilities>)，寻找本地网络中的黑群晖。
 3. 找到黑群晖后，按提示上传已下载的 DSM_DS3622xs+\_42661.pat，安装 DSM v7.1.0-42661。
 4. 按页面提示等待几分钟后，登录 DSM，按提示进行初始化设置，此处不赘述。
 5. 虚拟机关机。
 
 ## 第三次修改虚拟机配置
-1. 在本地计算机用 SSH 登录到 ESXi，将连接在主板 SATA 接口的三块硬盘分别设置 RDM。使用 `ls -l /vmfs/devices/disks/` 查看硬盘文件名，然后使用如下格式的命令设置 RDM：
+1. 在本地计算机用 SSH 登录到 ESXi，将连接在主板 SATA 接口的三块硬盘分别设置 RDM。使用 `ls -l /vmfs/devices/disks/` 查看硬盘文件名，然后使用**如下格式**的命令设置 RDM：
 
 ```sh
 vmkfstools -z /vmfs/devices/disks/[t10_ATA_____...] /vmfs/volumes/datastore1/XPEnology/[...]_RDM.vmdk
