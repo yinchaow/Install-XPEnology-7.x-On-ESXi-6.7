@@ -1,6 +1,6 @@
 # 在 ESXi 6.7 上安装黑群晖 DSM 7.1
 
-本文更新于 2022 年 4 月 26 日。
+本文更新于 2022 年 4 月 29 日。
 
 目前 [RedPill Loader Builder](<https://github.com/RedPill-TTG/redpill-load>) 支持的黑群晖型号：
 
@@ -145,3 +145,5 @@ sudo poweroff                                            #虚拟机关机
 5. [docker-xpenology-open-vm-tools](<https://github.com/yale-wp/docker-xpenology-open-vm-tools>)
 6. [Experiment on sata_args in grub.cfg](<https://gugucomputing.wordpress.com/2018/11/11/experiment-on-sata_args-in-grub-cfg>)
 7. [ESXi 6.7 client GUI broken - cnMaestro OVA upload fails at times](<https://community.cambiumnetworks.com/t/esxi-6-7-client-gui-broken-cnmaestro-ova-upload-fails-at-times/61731>)
+8. [WikiChip](<https://en.wikichip.org>)
+9. [群晖官网](<https://www.synology.com>)
