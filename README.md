@@ -65,7 +65,7 @@
 ```
 
 5. 记下上一步生成的 MAC 地址。
-6. 用 vi 修改 user_config.json，设置 DiskIdxMap 和 SataPortMap 参数。本文，SataPortMap=*144*，DiskIdxMap=*310000*。
+6. 用 vi 修改 user_config.json，设置 DiskIdxMap 和 SataPortMap 参数。本文，SataPortMap=*144*，DiskIdxMap=*310000*。在此文件中也可以修改 MAC 地址，前 3 段不可改动，后 3 段随意改。
 7. 依次执行以下命令：
 
 ```sh
