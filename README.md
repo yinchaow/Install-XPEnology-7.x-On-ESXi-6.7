@@ -59,9 +59,9 @@
 4. 依次执行以下命令：
 
 ```sh
-./rploader.sh update now                            #更新 rploader.sh 至最新
+./rploader.sh update now
 ./rploader.sh fullupgrade now
-./rploader.sh serialgen DS3622xs+                   #生成 DS3622xs+ 的序列号和 MAC 地址，并写入 user_config.json
+./rploader.sh serialgen DS3622xs+
 ```
 
 5. 记下上一步生成的 MAC 地址。
