@@ -1,6 +1,6 @@
 # 在 ESXi 6.7 上安装黑群晖 DSM 7.1
 
-本文更新于 2022 年 4 月 29 日。
+本文更新于 2022 年 6 月 2 日。
 
 目前 [RedPill Loader Builder](<https://github.com/RedPill-TTG/redpill-load>) 支持的黑群晖型号：
 
@@ -9,8 +9,8 @@
 |DS3615xs|Intel Core i3-4130 (2013-9-1)|Haswell|36|
 |DS3617xs|Intel Xeon D-1527 (2015-11-1)|Broadwell|36|
 |DS916+|Intel Pentium N3710 (2015-3)|Braswell|9|
-|DS918+|Intel Celeron J3455 (2016-8-30)|Apollo Lake|9|
-|[**DS920+**](<https://www.synology.com/en-global/products/DS920+>)|**Intel Celeron J4125 (2019-11)**|**Gemini Lake Refresh**|**9**|
+|**DS918+**|**Intel Celeron J3455 (2016-8-30)**|**Apollo Lake**|**9**|
+|DS920+|Intel Celeron J4125 (2019-11)|Gemini Lake Refresh|9|
 |[**DS3622xs+**](<https://www.synology.com/en-global/products/DS3622xs+>)|**Intel Xeon D-1531 (2015-11-1)**|**Broadwell**|**36**|
 |FS6400|Intel Xeon Silver 4110 (2017-7-11)|Skylake|48/72|
 |DVA3219|Intel Atom C3538 (2017-8-15)|Denverton|14|
@@ -22,13 +22,13 @@
 安装方法参考 [tmyers07](<https://github.com/tmyers07>) 的[教程](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)和 Peter Suh 的[教程](<https://xpenology.com/forum/topic/60130-redpill-tinycore-loader-installation-guide-for-dsm-71-baremetal/>)。
 
 ## 下载
-- [tinycore-redpill 虚拟硬盘文件 tinycore-redpill.img.gz](<https://github.com/pocopico/tinycore-redpill>)（img 版，目前版本是 0.4.6）
+- [tinycore-redpill 虚拟硬盘文件 tinycore-redpill.img.gz](<https://github.com/pocopico/tinycore-redpill>)（img 版，目前版本是 0.8.0.0）
 - [StarWind V2V Converter](<https://www.starwindsoftware.com/starwind-v2v-converter>)
 - [DSM v7.1.0-42661](<https://global.download.synology.com/download/DSM/release/7.1/42661/DSM_DS3622xs%2B_42661.pat>)
 - [Offline bundle for ESXi 6.x - esxui-offline-bundle-6.x-10692217.zip](<https://flings.vmware.com/esxi-embedded-host-client>)（可能会用到）
 
 ## 转换虚拟硬盘
-1. 解压 tinycore-redpill.v0.4.6.img.gz，得到 img 文件。
+1. 解压 tinycore-redpill.v0.8.0.0.img.gz，得到 img 文件。
 2. 安装 StarWind V2V Converter。
 3. 打开 StarWind V2V Converter，依次选择如下：
     - Local file
@@ -37,7 +37,7 @@
     - VMDK
     - ESXi server image
     - ESXi pre-allocated image
-4. 最终转换得到两个文件，分别是 tinycore-redpill.v0.4.6-flat.vmdk 和 tinycore-redpill.v0.4.6.vmdk。
+4. 最终转换得到两个文件，分别是 tinycore-redpill.v0.8.0.0-flat.vmdk 和 tinycore-redpill.v0.8.0.0.vmdk。
 
 ## 新建虚拟机
 1. 在 ESXi 新建虚拟机，此处假定虚拟机名为『XPEnology』。
@@ -46,10 +46,10 @@
 4. 删除原有硬盘、SCSI 控制器、USB 控制器、光驱。
 5. 添加一个 SATA 控制器，此时应共有两个，编号分别是『SATA 控制器 0』和『SATA 控制器 1』。
 6. 虚拟机选项 - 引导选项 - 固件，设为『BIOS』。
-7. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传已转换的 tinycore-redpill.v0.4.6-flat.vmdk 和 tinycore-redpill.v0.4.6.vmdk。
+7. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传已转换的 tinycore-redpill.v0.8.0.0-flat.vmdk 和 tinycore-redpill.v0.8.0.0.vmdk。
 
 ## 第一次修改虚拟机配置
-1. 虚拟机添加一块现有硬盘，选 tinycore-redpill.v0.4.6.vmdk，控制器选为『SATA 控制器 0:0』。
+1. 虚拟机添加一块现有硬盘，选 tinycore-redpill.v0.8.0.0.vmdk，控制器选为『SATA 控制器 0:0』。
 2. 虚拟机添加一块标准硬盘，大小可设为 50GB，厚置备延迟置零，控制器选为『SATA 控制器 1:0』。
 
 ## 虚拟机第一次开机
@@ -69,12 +69,12 @@
 7. 依次执行以下命令：
 
 ```sh
+./rploader.sh backup now
 ./rploader.sh build broadwellnk-7.1.0-42661
 ./rploader.sh clean now
 rm -rf /mnt/sda3/auxfiles
 rm -rf /home/tc/custom-module
 rm -f /home/tc/oldpat.tar.gz
-./rploader.sh backup now
 sudo poweroff                                            #虚拟机关机
 ```
 
@@ -128,12 +128,12 @@ sudo ln -s /mnt/sda3/auxfiles /home/tc/custom-module
 
 ```sh
 ./rploader.sh fullupgrade now
+./rploader.sh backup now
 ./rploader.sh build broadwellnk-7.1.0-42661
 ./rploader.sh clean now
 rm -rf /mnt/sda3/auxfiles
 rm -rf /home/tc/custom-module
 rm -f /home/tc/oldpat.tar.gz
-./rploader.sh backup now
 sudo poweroff                                            #虚拟机关机
 ```
 
