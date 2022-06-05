@@ -109,7 +109,9 @@ sudo mkdir /root/.ssh
 sudo docker run -d --restart=always --net=host -v /root/.ssh/:/root/.ssh/ --name open-vm-tools yalewp/xpenology-open-vm-tools
 ```
 
-## 从 7.1-42661 升级到 7.1-42661 Update 2
+## 附
+
+### 从 7.1-42661 升级到 7.1-42661 Update 2
 1. 从群晖官网下载 [synology_broadwellnk_3622xs+.pat](<https://global.download.synology.com/download/DSM/criticalupdate/update_pack/42661-2/synology_broadwellnk_3622xs%2B.pat>)。
 2. 在黑群晖中正常安装此升级。
 3. 重启，进入 Tinycore。
@@ -120,7 +122,7 @@ sudo docker run -d --restart=always --net=host -v /root/.ssh/:/root/.ssh/ --name
 sudo reboot
 ```
 
-## 从 7.0 升级到 7.1
+### 从 7.0 升级到 7.1
 此部分适用于已安装 7.0.1，需要升级到 7.1.0-42661 且不丢失数据。
 1. 虚拟机开机，4 秒钟内选择进入 Tiny Core Image Build。
 2. 在本地计算机使用 SSH 登录 Tinycore（即黑群晖的 IP），用户名为 `tc`，密码为 `P@ssw0rd`。
