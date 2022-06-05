@@ -1,6 +1,6 @@
 # 在 ESXi 6.7 上安装黑群晖 DSM 7.1
 
-本文更新于 2022 年 6 月 2 日。
+本文更新于 2022 年 6 月 5 日。
 
 目前 [RedPill Loader Builder](<https://github.com/RedPill-TTG/redpill-load>) 支持的黑群晖型号：
 
@@ -113,7 +113,7 @@ sudo docker run -d --restart=always --net=host -v /root/.ssh/:/root/.ssh/ --name
 1. 从群晖官网下载 [synology_broadwellnk_3622xs+.pat](<https://global.download.synology.com/download/DSM/criticalupdate/update_pack/42661-2/synology_broadwellnk_3622xs%2B.pat>)。
 2. 在黑群晖中正常安装此升级。
 3. 重启，进入 Tinycore。
-4. 在本地计算机用 SSH 登录 Tinycore，执行以下命令，参考 Thesevenn 的[回复](<https://xpenology.com/forum/topic/62919-dsm-71-42661-update-2/?do=findComment&comment=284920>)：
+4. 在本地计算机用 SSH 登录 Tinycore，执行以下命令（参考 Thesevenn 的[回复](<https://xpenology.com/forum/topic/62919-dsm-71-42661-update-2/?do=findComment&comment=284920>)）：
 ```sh
 ./rploader.sh update now
 ./rploader.sh postupdate broadwellnk-7.1.0-42661
