@@ -114,8 +114,9 @@ sudo docker run -d --restart=always --net=host -v /root/.ssh/:/root/.ssh/ --name
 ### 从 7.1-42661 升级到 7.1-42661 Update 2
 1. 从群晖官网下载 [synology_broadwellnk_3622xs+.pat](<https://global.download.synology.com/download/DSM/criticalupdate/update_pack/42661-2/synology_broadwellnk_3622xs%2B.pat>)。
 2. 在黑群晖中正常安装此升级。
-3. 重启，进入 Tinycore。
-4. 在本地计算机用 SSH 登录 Tinycore，执行以下命令（参考 Thesevenn 的[回复](<https://xpenology.com/forum/topic/62919-dsm-71-42661-update-2/?do=findComment&comment=284920>)）：
+3. 重启，4 秒钟内选择进入 Tiny Core Image Build。
+4. 在本地计算机用 SSH 登录 Tinycore（即黑群晖的 IP），用户名为 `tc`，密码为 `P@ssw0rd`。
+5. 执行以下命令（参考 Thesevenn 的[回复](<https://xpenology.com/forum/topic/62919-dsm-71-42661-update-2/?do=findComment&comment=284920>)）：
 ```sh
 ./rploader.sh update now
 ./rploader.sh postupdate broadwellnk-7.1.0-42661
