@@ -62,14 +62,14 @@ exit
 ./rploader.sh serialgen DS3622xs+ realmac
 ```
 
-5. 用 vi 修改 user_config.json，设置 DiskIdxMap 和 SataPortMap 参数。本文，SataPortMap=*144*，DiskIdxMap=*310000*。在此文件中也可以修改 MAC 地址，前 3 段不可改动，后 3 段随意改。
+5. 用 vi 修改 user_config.json，设置 DiskIdxMap 和 SataPortMap 参数。本文，SataPortMap=*144*，DiskIdxMap=*310000*。如果安装的是使用 device tree 的机型，如 DS920+，则略过此步。
 6. 依次执行以下命令：
 
 ```sh
 ./rploader.sh build broadwellnk-7.1.1-42962
 ./rploader.sh backup
-exitcheck.sh reboot
-sudo reboot                                            #虚拟机重启
+./rploader.sh backuploader
+exitcheck.sh reboot                                #虚拟机重启
 ```
 
 ## 虚拟机第二次开机
@@ -95,7 +95,7 @@ esxcli software vib install -d /vmfs/volumes/datastore1/esxui-offline-bundle-6.x
 ```
 
 ## 虚拟机第三次开机
-1. 开机后，在黑群晖中添加上一步加入的物理硬盘。如果这些是在其他黑群晖用过的硬盘，那么打开『存储管理器』，在『存储空间』下有『可用池1』、『可用池2』等存储池，在每个存储池点击『在线重组』，这样不会丢失数据。
+1. 开机后，在黑群晖中添加上一步加入的物理硬盘。如果这些是在其他黑群晖用过的硬盘，那么打开『存储管理器』，在『存储空间』下有『可用池 1』、『可用池 2』等存储池，在每个存储池点击『在线重组』，这样不会丢失数据。
 2. 黑群晖安装 Docker 套件。
 3. 在黑群晖控制面板中开启 SSH。
 4. 在本地计算机用 SSH 登录黑群晖，执行以下命令安装 Open VM Tools：
@@ -108,7 +108,7 @@ sudo docker run -d --restart=always --net=host -v /root/.ssh/:/root/.ssh/ --name
 
 ## 参考
 1. [tinycore-redpill](<https://github.com/pocopico/tinycore-redpill>)
-2. [**Xpenology 7.0.1 on ESXi 7.x**](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)**（特别重要）**
+2. [**Xpenology 7.0.1 on ESXi 7.x**](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)
 3. [Tutorial: Install DSM 7.x with TinyCore RedPill (TCRP) Loader on ESXi](<https://xpenology.com/forum/topic/62547-tutorial-install-dsm-7x-with-tinycore-redpill-tcrp-loader-on-esxi/>)
 4. [Tutorial: Install/Migrate to DSM 7.x with TinyCore RedPill (TCRP) Loader](<https://xpenology.com/forum/topic/62221-tutorial-installmigrate-to-dsm-7x-with-tinycore-redpill-tcrp-loader/>)
 5. [How to passthrough SATA drives directly on VMWare EXSI 6.5 as RDMs](<https://gist.github.com/Hengjie/1520114890bebe8f805d337af4b3a064>)
