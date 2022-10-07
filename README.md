@@ -1,6 +1,6 @@
 # 在 ESXi 6.7 上安装黑群晖 DSM 7.x
 
-本文更新于 2022 年 10 月 1 日。
+本文更新于 2022 年 10 月 7 日。
 
 目前 [RedPill Loader Builder](<https://github.com/RedPill-TTG/redpill-load>) 支持的黑群晖主要型号有：
 
@@ -17,12 +17,14 @@
 |[DS2422+](https://www.synology.com/en-us/products/DS2422+)|AMD Ryzen V1500B (2018-12)|Zen|24|
 |[RS4021xs+](https://www.synology.com/en-us/products/RS4021xs+)|Intel Xeon D-1541 (2015-11-1)|Broadwell|40|
 
+可以参照 [flyride](https://xpenology.com/forum/profile/39776-flyride/) 的[文章](https://xpenology.com/forum/topic/61634-dsm-7x-loaders-and-platforms/)选择黑群晖的型号。
+
 本文以在 ESXi 6.7 上安装 DS3622xs+ 为例。共有 7 块物理硬盘，其中 3 块连接在主板 SATA 接口，作 RDM 供黑群晖使用，4 块连接在 PCI-E 转 SATA 扩展卡，直通给黑群晖。另有一块 PCI-E 网卡直通给黑群晖。
 
-安装方法参考 [tmyers07](<https://github.com/tmyers07>) 的[教程](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)、flyride 的[教程 1](<https://xpenology.com/forum/topic/62547-tutorial-install-dsm-7x-with-tinycore-redpill-tcrp-loader-on-esxi/>) 和[教程 2](<https://xpenology.com/forum/topic/62221-tutorial-installmigrate-to-dsm-7x-with-tinycore-redpill-tcrp-loader/>)。
+安装方法参考 [tmyers07](<https://github.com/tmyers07>) 的[教程](<https://www.tsunati.com/blog/xpenology-7-0-1-on-esxi-7-x>)、[flyride](https://xpenology.com/forum/profile/39776-flyride/) 的[教程 1](<https://xpenology.com/forum/topic/62547-tutorial-install-dsm-7x-with-tinycore-redpill-tcrp-loader-on-esxi/>) 和[教程 2](<https://xpenology.com/forum/topic/62221-tutorial-installmigrate-to-dsm-7x-with-tinycore-redpill-tcrp-loader/>)。
 
 ## 下载
-- [tinycore-redpill 虚拟硬盘文件 tinycore-redpill.vx.x.x.x.vmdk.gz](<https://github.com/pocopico/tinycore-redpill/releases>)（vmdk 版，目前版本是 0.9.2.6）
+- tinycore-redpill 虚拟硬盘 vmdk 文件 [tinycore-redpill.vx.x.x.x.vmdk.gz](<https://github.com/pocopico/tinycore-redpill/releases>)
 - [DSM v7.1.1-42962 (with Update 1)](<https://archive.synology.com/download/Os/DSM/7.1.1-42962-1-NanoPacked>)
 - [Offline bundle for ESXi 6.x - esxui-offline-bundle-6.x-10692217.zip](<https://flings.vmware.com/esxi-embedded-host-client>)（可能会用到）
 
@@ -34,15 +36,15 @@
 5. 添加一个 SATA 控制器，此时应共有两个，编号分别是『SATA 控制器 0』和『SATA 控制器 1』。
 6. 虚拟机选项 - 引导选项 - 固件，设为『BIOS』。
 7. 保存。
-8. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传 tinycore-redpill.v0.8.0.0.vmdk.gz。
+8. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传 tinycore-redpill.v0.9.2.7.vmdk.gz。
 9. ESXi - 主机 - 操作 - 服务 - 启用安全 Shell、启用控制台 Shell。
 10. 在本地计算机使用 SSH 登录 ESXi，执行以下命令：
 
 ```sh
 cd /vmfs/volumes/datastore1/XPEnology
-gunzip tinycore-redpill.v0.9.2.6.vmdk.gz
-vmkfstools -i tinycore-redpill.v0.9.2.6.vmdk XPEnology-TCRP.vmdk
-rm tinycore-redpill.v0.9.2.6.vmdk
+gunzip tinycore-redpill.v0.9.2.7.vmdk.gz
+vmkfstools -i tinycore-redpill.v0.9.2.7.vmdk XPEnology-TCRP.vmdk
+rm tinycore-redpill.v0.9.2.7.vmdk
 exit
 ```
 
@@ -62,7 +64,7 @@ exit
 ./rploader.sh serialgen DS3622xs+ realmac
 ```
 
-5. 用 vi 修改 user_config.json，设置 DiskIdxMap 和 SataPortMap 参数。本文，SataPortMap=*144*，DiskIdxMap=*310000*。如果安装的是使用 device tree 的机型，如 DS920+，则略过此步。
+5. 用 vi 修改 user_config.json，设置 DiskIdxMap 和 SataPortMap 参数。本文，SataPortMap=*144*，DiskIdxMap=*310000*。若安装的是 device tree 机型，比如 DS920+，则略过此步。
 6. 依次执行以下命令：
 
 ```sh
@@ -73,7 +75,7 @@ exitcheck.sh reboot                                #虚拟机重启
 ```
 
 ## 虚拟机第二次开机
-1. 选择进入『RedPill DS3622xs+ v7.1.1-42962 (SATA, Verbose)』。
+1. 选择进入『RedPill DS3622xs+ v7.1.1-42962 Beta (SATA, Verbose)』。
 2. 约 1 分钟后，本地计算机浏览器访问 <http://find.synology.com> 或使用 [Synology Assistant](<https://www.synology.com/en-us/support/download/DS3622xs+?version=7.1#utilities>)，寻找本地网络中的黑群晖。
 3. 找到黑群晖后，按提示上传已下载的 DSM_DS3622xs+\_42962.pat，安装 DSM v7.1.1-42962。
 4. 按页面提示等待几分钟后，登录 DSM，按提示进行初始化设置，此处不赘述。
@@ -117,3 +119,4 @@ sudo docker run -d --restart=always --net=host -v /root/.ssh/:/root/.ssh/ --name
 8. [ESXi 6.7 client GUI broken - cnMaestro OVA upload fails at times](<https://community.cambiumnetworks.com/t/esxi-6-7-client-gui-broken-cnmaestro-ova-upload-fails-at-times/61731>)
 9. [WikiChip](<https://en.wikichip.org>)
 10. [群晖官网](<https://www.synology.com>)
+11. [DSM 7.x Loaders and Platforms](https://xpenology.com/forum/topic/61634-dsm-7x-loaders-and-platforms/)
