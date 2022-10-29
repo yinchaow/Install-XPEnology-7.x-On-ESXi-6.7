@@ -1,6 +1,6 @@
 # 在 ESXi 6.7 上安装黑群晖 DSM 7.x
 
-本文更新于 2022 年 10 月 7 日。
+本文更新于 2022 年 10 月 29 日。
 
 目前 [RedPill Loader Builder](<https://github.com/RedPill-TTG/redpill-load>) 支持的黑群晖主要型号有：
 
@@ -26,6 +26,7 @@
 ## 下载
 - tinycore-redpill 虚拟硬盘 vmdk 文件 [tinycore-redpill.vx.x.x.x.vmdk.gz](<https://github.com/pocopico/tinycore-redpill/releases>)
 - [DSM v7.1.1-42962 (with Update 1)](<https://archive.synology.com/download/Os/DSM/7.1.1-42962-1-NanoPacked>)
+- [DSM v7.1.1-42962-2](<https://archive.synology.com/download/Os/DSM/7.1.1-42962-2>)，文件名为 `synology_broadwellnk_3622xs+.pat`
 - [Offline bundle for ESXi 6.x - esxui-offline-bundle-6.x-10692217.zip](<https://flings.vmware.com/esxi-embedded-host-client>)（可能会用到）
 
 ## 新建虚拟机
@@ -36,15 +37,15 @@
 5. 添加一个 SATA 控制器，此时应共有两个，编号分别是『SATA 控制器 0』和『SATA 控制器 1』。
 6. 虚拟机选项 - 引导选项 - 固件，设为『BIOS』。
 7. 保存。
-8. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传 tinycore-redpill.v0.9.2.7.vmdk.gz。
+8. ESXi - 存储 - datastore1 - 数据存储浏览器，在『XPEnology』目录内上传 tinycore-redpill.v0.9.2.9.vmdk.gz。
 9. ESXi - 主机 - 操作 - 服务 - 启用安全 Shell、启用控制台 Shell。
 10. 在本地计算机使用 SSH 登录 ESXi，执行以下命令：
 
 ```sh
 cd /vmfs/volumes/datastore1/XPEnology
-gunzip tinycore-redpill.v0.9.2.7.vmdk.gz
-vmkfstools -i tinycore-redpill.v0.9.2.7.vmdk XPEnology-TCRP.vmdk
-rm tinycore-redpill.v0.9.2.7.vmdk
+gunzip tinycore-redpill.v0.9.2.9.vmdk.gz
+vmkfstools -i tinycore-redpill.v0.9.2.9.vmdk XPEnology-TCRP.vmdk
+rm tinycore-redpill.v0.9.2.9.vmdk
 exit
 ```
 
@@ -102,10 +103,26 @@ esxcli software vib install -d /vmfs/volumes/datastore1/esxui-offline-bundle-6.x
 3. 在黑群晖控制面板中开启 SSH。
 4. 在本地计算机用 SSH 登录黑群晖，执行以下命令安装 Open VM Tools：
 
-```
+```sh
 sudo mkdir /root/.ssh
 sudo docker run -d --restart=always --net=host -v /root/.ssh/:/root/.ssh/ --name open-vm-tools yalewp/xpenology-open-vm-tools
 ```
+
+## 升级到 7.1.1-42962-2
+1. 从群晖官网下载 [synology_broadwellnk_3622xs+.pat](<https://archive.synology.com/download/Os/DSM/7.1.1-42962-2>)。
+2. 在黑群晖中正常安装此升级。
+3. 重启，4 秒钟内选择进入 Tiny Core Image Build。
+4. 在本地计算机使用 SSH 登录 Tinycore，用户名为 `tc`，密码为 `P@ssw0rd`。
+5. 执行以下命令（参考 Thesevenn 的[回复](<https://xpenology.com/forum/topic/62919-dsm-71-42661-update-2/?do=findComment&comment=284920>)）：
+
+```sh
+./rploader.sh update
+./rploader.sh postupdate broadwellnk-7.1.1-42962
+exitcheck.sh reboot                                #虚拟机重启
+```
+
+## 附
+也可以使用 [fbelavenuto](<https://github.com/fbelavenuto>) 的 [arpl](<https://github.com/fbelavenuto/arpl>) 安装黑群晖。
 
 
 ## 参考
